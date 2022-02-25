@@ -2,7 +2,7 @@
 
 # 1. Network architecture:
 
-![image](https://user-images.githubusercontent.com/52651150/154005896-1b945379-82b7-487d-9adc-99253a2845f8.png)
+![image](https://user-images.githubusercontent.com/52651150/155665056-b8314a7b-4e3c-4a72-8f6c-0854a7173074.png)
 
 # 2. Development environment:
 
@@ -16,5 +16,5 @@ The development environment is TensorFlow 2.6.0, Python 3.6 and two NVIDIA RTX 3
 	
 # 4. Experimental results:
 
-![image](https://user-images.githubusercontent.com/52651150/154006722-9f4d4590-6bed-4842-a8e3-3eaa7584fe5b.png)
+![image](https://user-images.githubusercontent.com/52651150/155665126-cc47a596-9b8d-4c44-bc8f-081b88322194.png)
 
