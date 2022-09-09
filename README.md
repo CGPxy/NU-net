@@ -19,5 +19,5 @@ The development environment is TensorFlow 2.6.0, Python 3.6 and two NVIDIA RTX 3
 	
 ## 4. Experimental results:
 
-![image](https://user-images.githubusercontent.com/52651150/155665126-cc47a596-9b8d-4c44-bc8f-081b88322194.png)
+![1662684955131](https://user-images.githubusercontent.com/52651150/189250438-bd4178e4-b4cd-4909-b09c-51d4338dc011.png)
 
