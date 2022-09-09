@@ -1,4 +1,4 @@
-#  A Benchmark Network for Ultrasound Images Segmentationn
+#  Rethinking U-net for Ultrasound Images Segmentationn
 
 ## 1. Network architecture:
 
