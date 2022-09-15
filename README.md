@@ -1,8 +1,9 @@
-#  Rethinking U-net for Ultrasound Images Segmentationn
+#  NU-net: An Unpretentious Nested U-net for Breast Tumor Segmentation
 
 ## 1. Network architecture:
 
-![网络结构1 - 副本](https://user-images.githubusercontent.com/52651150/189247540-39120ef8-e3fc-4098-83ce-4dedd639fc83.png)
+![网络结构1](https://user-images.githubusercontent.com/52651150/190382090-867cc25d-d388-46d5-9991-1246c3f32887.png)
+
 
 ## 2. Development environment:
 
