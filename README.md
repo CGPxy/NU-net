@@ -2,7 +2,7 @@
 
 ## 1. Network architecture:
 
-![网络结构1](https://user-images.githubusercontent.com/52651150/190382090-867cc25d-d388-46d5-9991-1246c3f32887.png)
+![网络结构1](https://user-images.githubusercontent.com/52651150/201334714-8078b7ea-6366-4557-8c0f-3214c8889328.png)
 
 
 ## 2. Development environment:
