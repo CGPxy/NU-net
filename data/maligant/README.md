@@ -1,1 +1,1 @@
-Data split in the maligant tumor comparison experiment.
+Data split in the three-fold cross-validation experiment for maligant tumors.
