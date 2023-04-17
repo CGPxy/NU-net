@@ -1,2 +1,1 @@
-
-Data split in the benign tumor comparison experiment.
+Data split in the four-fold cross-validation experiment for benign tumors.
