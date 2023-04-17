@@ -1,1 +1,1 @@
-Data split in the Dataset B comparison experiment.
+Data split in the four-fold cross-validation experiment for Dataset B.
