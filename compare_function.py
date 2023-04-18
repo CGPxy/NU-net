@@ -15,15 +15,12 @@ import surface_distance as surfdist
 
 tf.disable_v2_behavior()
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "2,3"
-
-
 def get_contours(img):
     img_gray = cv2.cvtColor(img * 255, cv2.COLOR_BGR2GRAY)
     ret, img_bin = cv2.threshold(img_gray, 200, 255, cv2.THRESH_BINARY)
     contours, hierarchy = cv2.findContours(
         img_bin, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
+    print(len(contours))
     return contours[0]
 
 def HD_base(y_true, y_pred):
@@ -49,8 +46,33 @@ def ASSD(y_true, y_pred):
     pre2gt = avg_surf_dist[1]
     return pre2gt
 
+def get_boundary(img):
+    showimg_gray = cv2.cvtColor(img * 255, cv2.COLOR_BGR2GRAY)
+    showret, showbinary = cv2.threshold(showimg_gray, 50, 255, cv2.THRESH_BINARY)
+    showcontours, showhierarchy = cv2.findContours(
+        showbinary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
+    mask_all = np.zeros((384, 384, 3))
+    cv2.drawContours(mask_all, showcontours, -1, (1), 1)
+
+    return mask_all
 
 
+def ABD(y_true, y_pred):
+    y_true = get_boundary(y_true)
+    y_pred = get_boundary(y_pred)
+
+
+    y_true = np.array(y_true, dtype=bool)
+    y_pred = np.array(y_pred, dtype=bool)
+
+    surface_distances = surfdist.compute_surface_distances(
+        y_true, y_pred, spacing_mm=(1.0, 1.0, 1.0))
+    avg_surf_dist = surfdist.compute_average_surface_distance(
+        surface_distances)
+    #(gt2pre, pre2gt)
+    pre2gt = avg_surf_dist[1]
+    return pre2gt
 
 def cal_base(y_true, y_pred):
     y_pred_positive = K.round(K.clip(y_pred, 0, 1))
@@ -66,7 +88,6 @@ def cal_base(y_true, y_pred):
     FN = K.sum(y_positive * y_pred_negative)
 
     return TP, TN, FP, FN
-
 
 def PA(y_true, y_pred):
     TP, TN, FP, FN = cal_base(y_true, y_pred)
@@ -110,8 +131,6 @@ def Dice(y_true, y_pred):
     DC = 2*TP/(2*TP+FP+FN)
     return DC
 
-
-
 PAlist = []
 MPAlist = []
 IoUlist = []
@@ -121,11 +140,15 @@ Recalllist = []
 Specificitylist = []
 F1_socrelist = []
 Dicelist = []
-# HDlist = []
-# ASSDlist = []
+HDlist = []
+ASSDlist = []
+ABDlist = []
 
 
-excle1 = xlsxwriter.Workbook("/media/dy/Data_2T/CGP/Unet_Segnet/MICCAI/result/excel/kidney/Ours2.xlsx")
+savepath = '/media/dy/Data_2T/CGP/Unet_Segnet/NU_net/result/excel/unet_MDS_MOU/BUSI/'
+if not os.path.exists(savepath):
+    os.makedirs(savepath)
+excle1 = xlsxwriter.Workbook(savepath + "NUnet11.xlsx")
 worksheet = excle1.add_worksheet()
 worksheet.write(0,0,"image_name")
 worksheet.write(0,1,"PA")
@@ -135,29 +158,31 @@ worksheet.write(0,4,"Recall")
 worksheet.write(0,5,"Specificity")
 worksheet.write(0,6,"F1_socre")
 worksheet.write(0,7,"Dice")
-# worksheet.write(0,8,"HD")
-# worksheet.write(0,9,"ASSD")
+worksheet.write(0,8,"HD")
+worksheet.write(0,9,"ASSD")
+worksheet.write(0,10,"ABD")
 
+# predict mask
+image_path = '/media/dy/Data_2T/CGP/Unet_Segnet/data/Breast/BUSI/new-BUSI/1/Test_images/labels/384/'
 
-image_path = '/media/dy/Data_2T/CGP/Unet_Segnet/data/new-kidney/2/Test_images/labels/384/'
-# mask_path = '/home/dy/CGP/Unet_Segnet/data/Test/Rethink_U/Test_data/labels/'
-mask_path = '/media/dy/Data_2T/CGP/Unet_Segnet/MICCAI/result/mask/kidney/2/'
+# Ground-turth mask
+mask_path = '/media/dy/Data_2T/CGP/Unet_Segnet/NU_net/result/mask/unet_MDS_MOU/BUSI/1/'
 
 filelist = os.listdir(mask_path)
 i = 0
 for item in filelist:
     print(item)
     i = i+1
-    image = cv2.imread(image_path + item, cv2.IMREAD_GRAYSCALE)
-    mask = cv2.imread(mask_path + item, cv2.IMREAD_GRAYSCALE)
-    image=tf.cast(image,tf.float32)
-    mask=tf.cast(mask,tf.float32)
+    image1 = cv2.imread(image_path + item, cv2.IMREAD_GRAYSCALE)
+    mask1 = cv2.imread(mask_path + item, cv2.IMREAD_GRAYSCALE)
+    image=tf.cast(image1,tf.float32)
+    mask=tf.cast(mask1,tf.float32)
 
-    # Himage = cv2.imread(image_path + item)
-    # Hmask = cv2.imread(mask_path + item)
-    # hd = HD_base(Himage, Hmask)
-    # assd = ASSD(Himage, Hmask)
-
+    Himage = cv2.imread(image_path + item)
+    Hmask = cv2.imread(mask_path + item)
+    hd = HD_base(Himage, Hmask)
+    assd = ASSD(Himage, Hmask)
+    abd = ABD(Himage, Hmask)
 
     pa = PA(mask, image)
     iou = IoU(mask, image)
@@ -167,9 +192,6 @@ for item in filelist:
     f1_score = F1_socre(mask, image)
     dice = Dice(mask, image)
 
-
-
-    
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         PAlist.append(sess.run(pa))
@@ -179,9 +201,9 @@ for item in filelist:
         Specificitylist.append(sess.run(specificity))
         F1_socrelist.append(sess.run(f1_score))
         Dicelist.append(sess.run(dice))
-        # HDlist.append(hd)
-        # ASSDlist.append(assd)
-
+        HDlist.append(hd)
+        ASSDlist.append(assd)
+        ABDlist.append(abd)
 
         print(item)
         print("PA:%f   IoU:%f  Precision:%f  Recall:%f  Specificity:%f   F1_socre:%f    Dice:%f" 
@@ -196,9 +218,9 @@ for item in filelist:
         worksheet.write(i,5,sess.run(specificity))
         worksheet.write(i,6,sess.run(f1_score))
         worksheet.write(i,7,sess.run(dice))
-        # worksheet.write(i,8,hd)
-        # worksheet.write(i,9,assd)
-
+        worksheet.write(i,8,hd)
+        worksheet.write(i,9,assd)
+        worksheet.write(i,10,abd)
 
 if i != 0:
 
@@ -209,8 +231,9 @@ if i != 0:
     worksheet.write(i+2,5,sum(Specificitylist) / i)
     worksheet.write(i+2,6,sum(F1_socrelist) / i)
     worksheet.write(i+2,7,sum(Dicelist) / i)
-    # worksheet.write(i+2,8,sum(HDlist) / i)
-    # worksheet.write(i+2,9,sum(ASSDlist) / i)
+    worksheet.write(i+2,8,sum(HDlist) / i)
+    worksheet.write(i+2,9,sum(ASSDlist) / i)
+    worksheet.write(i+2,10,sum(ABDlist) / i)   
     excle1.close()
 
     print("MPA:%f" % (sum(PAlist) / i))
@@ -220,5 +243,6 @@ if i != 0:
     print("MSpecificity:%f" % (sum(Specificitylist) / i))
     print("MF1_score:%f" % (sum(F1_socrelist) / i))
     print("Dice:%f" % (sum(Dicelist) / i))
-    # print("HD:%f" % (sum(HDlist) / i))
-    # print("ASSD:%f" % (sum(ASSDlist) / i))
+    print("HD:%f" % (sum(HDlist) / i))
+    print("ASSD:%f" % (sum(ASSDlist) / i))
+    print("ABD:%f" % (sum(ABDlist) / i))
