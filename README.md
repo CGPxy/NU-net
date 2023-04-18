@@ -14,11 +14,13 @@ The epoch size and batch size are set to 50 and 12, respectively. We utilize the
 
 ## 4. reproduce
 #### Step 1: Perform data augmentation
-'''
-//python Data_augement.py 
+     python Data_augement.py   --Namepath='Name of your original image'   --Imagepath='path of your original train image'   --Labelpath= 'path of your original train label'    --Saveimagepath='savepath of your train imag'   --Savelabelpath= 'savepath of your train label' 
 
-'''
-
+#### Step 2: Network training
+     python Train.py   --filepath='path of your train data'   --save_dir='path to output model'
+     
+     
+     
 ## 5. Experimental results:
 
 ![1662684955131](https://user-images.githubusercontent.com/52651150/189250438-bd4178e4-b4cd-4909-b09c-51d4338dc011.png)
