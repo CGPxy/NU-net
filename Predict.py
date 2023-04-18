@@ -16,8 +16,8 @@ mpl.use('TkAgg')
 
 TEST_SET = []
 
-def read_directory(directory_name):
-    for filename in os.listdir(directory_name):
+def read_directory(args):
+    for filename in os.listdir(args["Imagepath"]):
         # image
 #        image = cv2.imread(directory_name + "/" + filename)
         TEST_SET.append(filename)
@@ -35,7 +35,7 @@ def original_predict(args):
     for n in range(len(TEST_SET)):
         path = TEST_SET[n]
         # BUSI
-        image = cv2.imread('/media/dy/Data_2T/CGP/Unet_Segnet/data/Breast/BUSI/new-BUSI/1/Test_images/images/384/' + path)
+        image = cv2.imread(args["Imagepath"] + path)
         image = np.array(image,dtype=np.uint8)
         # image = img_to_array(image)
         h,w,_ = image.shape
@@ -67,7 +67,7 @@ def original_predict(args):
         pred = preimage.reshape((384,384)).astype(np.uint8)
         mask_whole[:,:] = pred[:,:]
 
-        savepath = '/media/dy/Data_2T/CGP/Unet_Segnet/NU_net/result/mask/unet_MDS_MOU/BUSI/1/'
+        savepath = args["Saveimagepath"]
         if not os.path.exists(savepath):
             os.makedirs(savepath)
         cv2.imwrite(savepath+path,mask_whole[0:h,0:w])
@@ -76,12 +76,12 @@ def args_parse():
 # construct the argument parse and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True, help="path to trained model model")
+    ap.add_argument("--Imagepath", required=True, help="path of your test image")
+    ap.add_argument("--Saveimagepath", required=True, help="savepath of your predict mask")
     args = vars(ap.parse_args())    
     return args
 
 if __name__ == '__main__':
-    #BUSIS
-    read_directory("/media/dy/Data_2T/CGP/Unet_Segnet/data/Breast/BUSI/new-BUSI/1/Test_images/images/384/")
-
     args = args_parse()
     original_predict(args)
+    read_directory(args)
