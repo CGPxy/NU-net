@@ -15,7 +15,7 @@ The epoch size and batch size are set to 50 and 12, respectively. We utilize the
 ## 4. reproduce
 #### Step 1: Perform data augmentation
 
-
+python Data_augement.py 
 
 
 
