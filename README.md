@@ -12,6 +12,11 @@ The development environment is TensorFlow 2.6.0, Python 3.6 and two NVIDIA RTX 3
 ## 3. Network hyperparameters:
 The epoch size and batch size are set to 50 and 12, respectively. We utilize the Adam optimizer to train our network and its hyperparameters are set to the default values (the learning rate is 0.001, the momentum is 0.99, the epsilon is 1e-07, and the weight decay is None).
 
+## 4. reproduce
+Step 1: Perform data augmentation
+
+
+
 
 
 ## 5. Experimental results:
