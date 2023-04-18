@@ -1,4 +1,4 @@
-#  NU-net: An Unpretentious Nested U-net for Breast Tumor Segmentation
+#  NU-net: Rethinking the unpretentious U-net for medical ultrasound image segmentation
 
 ## 1. Datasets：
 ### Breast ultrasound dataset:
