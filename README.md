@@ -19,8 +19,11 @@ The epoch size and batch size are set to 50 and 12, respectively. We utilize the
 #### Step 2: Network training
      python Train.py   --filepath='path of your train data'   --save_dir='path to output model'
      
-#### Step 2: Network testing
-     python Predict.py   --filepath='path of your train data'   --save_dir='path to output model'     
+#### Step 3: Network test
+     python Predict.py  --model='path of your trained model' --Imagepath='path of your test image'   --Saveimagepath='savepath of your predict mask'     
+     
+#### Step 4: Evaluation of quantitative indicators
+     python compare_function.py    
      
 ## 5. Experimental results:
 
