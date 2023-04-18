@@ -1,7 +1,7 @@
 #  NU-net: An Unpretentious Nested U-net for Breast Tumor Segmentation
 
 ## 1. Development environment:
-The development environment is TensorFlow 2.6.0, Python 3.6 and two NVIDIA RTX 3090 GPU. 更多的环境变量要求在
+The development environment is TensorFlow 2.6.0, Python 3.6 and two NVIDIA RTX 3090 GPU. More environment variables are requested in Requirements.
 	
 ## 2. Datasets：
 ### Breast ultrasound dataset:
