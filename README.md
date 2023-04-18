@@ -14,16 +14,16 @@ The epoch size and batch size are set to 50 and 12, respectively. We utilize the
 
 ## 4. Reproduce
 #### Step 1: Perform data augmentation
-     python Data_augement.py   --Namepath='Name of your original image'   --Imagepath='path of your original train image'   --Labelpath= 'path of your original train label'    --Saveimagepath='savepath of your train imag'   --Savelabelpath= 'savepath of your train label' 
+     python Data_augement.py   --Namepath='Name of your original image'   --Imagepath='path of your original train image'   --Labelpath= 'path of your original train label'    --Saveimagepath='path to save your train imag'   --Savelabelpath= 'path to save your train label' 
 
 #### Step 2: Network training
      python Train.py   --filepath='path of your train data'   --save_dir='path to output model'
      
 #### Step 3: Network test
-     python Predict.py  --model='path of your trained model' --Imagepath='path of your test image'   --Saveimagepath='savepath of your predict mask'     
+     python Predict.py  --model='path of your trained model' --Imagepath='path of your test image'   --Saveimagepath='path to save your predict mask'     
      
 #### Step 4: Evaluation of quantitative indicators
-     python compare_function.py    
+     python compare_function.py     --Imagepath='path of your predic mask'   --Labelpath= 'path of your ground-truth mask'  --Savepath= 'path to save your results' 
      
 ## 5. Experimental results:
 
