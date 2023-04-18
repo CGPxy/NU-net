@@ -1,1 +1,16 @@
+Package                         Version
+------------------------------- -------------------
+h5py                            3.1.0
+keras                           2.6.0
+matplotlib                      3.3.4
+numpy                           1.19.5
+opencv-python                   4.5.4.60
+pip                             21.3.1
+scikit-image                    0.17.2
+scikit-learn                    0.24.2
+scipy                           1.4.1
+sklearn                         0.0
+Surface-Distance-Based-Measures 0.1
+tensorflow-gpu                  2.5.0
+xlrd                            1.2.0
 
